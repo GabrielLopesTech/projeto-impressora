@@ -87,6 +87,5 @@ Configuração padrão: tipo = 1 (USB), modelo = "i9", conexão = "USB", parâme
 ## 👥 Autores
 *(em ordem alfabética)*
 
-- 
-- 
-- 
+- Gabriel Lopes
+- Igor Germano
