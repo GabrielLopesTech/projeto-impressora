@@ -1,0 +1,14 @@
+# Arquivos do IntelliJ e da compilação
+.idea/
+*.iml
+out/
+*.class
+
+# Cópias e arquivos auxiliares que não fazem parte do projeto
+E1_Impressora01.dll (*)
+E1_Impressora01.txt
+jna-5.15.0.txt
+ASS_QRCODE Cancelamento Sat.txt
+COMO_TESTAR.txt
+Trabalho_Logica_Impressora.pdf
+*.zip
