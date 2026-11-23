@@ -179,14 +179,15 @@ public class Main {
 
         for (int i = 1; i <= copias; i++) {
             // 3) chama o comando e guarda o retorno
-            int retorno = ImpressoraDLL.INSTANCE.ImpressaoTexto(texto, 1, 4, 0);
+            //    o "\n" termina a linha; sem ele as cópias ficariam grudadas na mesma linha
+            int retorno = ImpressoraDLL.INSTANCE.ImpressaoTexto(texto + "\n", 1, 4, 0);
             if (retorno >= 0) {                                // 4) ImpressaoTexto: erro só se for negativo
                 System.out.println("Cópia " + i + " impressa!");
             } else {
                 System.out.println("Erro ao imprimir. Código: " + retorno);
             }
+            cortarPapel();                                     // 5) corta o papel: cada cópia sai separada
         }
-        cortarPapel();                                         // 5) corta o papel
     }
 
     // Pergunta o conteúdo e imprime um QR Code
@@ -320,18 +321,26 @@ public class Main {
         }
     }
 
-    // (extra) Consulta o status geral da impressora (5 = geral)
+    // (extra) Consulta o status da impressora. Não imprime nada: o resultado aparece só na tela.
+    // Parâmetros: 1 = gaveta, 2 = tampa, 3 = papel, 5 = geral
     public static void consultarStatus() {
         if (!conexaoAberta) {
             System.out.println("Conexão fechada. Abra a conexão antes (opção 2).");
             return;
         }
-        int retorno = ImpressoraDLL.INSTANCE.StatusImpressora(5);
-        if (retorno >= 0) {
-            System.out.println("Status da impressora (valor devolvido): " + retorno);
-        } else {
-            System.out.println("Erro ao consultar o status. Código: " + retorno);
+        String[] nomes = {"Gaveta", "Tampa", "Papel", "Geral"};
+        int[] parametros = {1, 2, 3, 5};
+
+        System.out.println("Status da impressora (valores devolvidos pela DLL):");
+        for (int i = 0; i < parametros.length; i++) {
+            int retorno = ImpressoraDLL.INSTANCE.StatusImpressora(parametros[i]);
+            if (retorno >= 0) {
+                System.out.println("  " + nomes[i] + ": " + retorno);
+            } else {
+                System.out.println("  " + nomes[i] + ": erro ao consultar. Código: " + retorno);
+            }
         }
+        System.out.println("O significado de cada número está na documentação da Elgin (StatusImpressora).");
     }
 
     // Auxiliar: avança e corta o papel, conferindo o retorno
@@ -361,7 +370,7 @@ public class Main {
         System.out.println("9  - Abrir Gaveta");
         System.out.println("10 - Sinal Sonoro");
         System.out.println("11 - Avancar Papel");
-        System.out.println("12 - Status da Impressora");
+        System.out.println("12 - Status da Impressora (só na tela)");
         System.out.println("0  - Sair");
     }
 
